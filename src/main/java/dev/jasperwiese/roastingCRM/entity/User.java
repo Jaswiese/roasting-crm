@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,7 +15,8 @@ import lombok.ToString;
 //TODO: add JPA annotations
 @Table
 public class User {
-    private String userId;
+
+    private UUID userId;
 
     private Boolean verified;
 
@@ -27,5 +30,5 @@ public class User {
 
     private String role;
 
-    private String emergencyContactId;
+    private UUID emergencyContactId;
 }
