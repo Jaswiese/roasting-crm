@@ -1,17 +1,23 @@
 package dev.jasperwiese.roastingCRM.entity;
 
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.io.Serializable;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-//TODO: add JPA annotations
-@Table
-public class UserAddress {
-    private String userId;
-    private String addressId;
+@Entity
+@Table(name = "user_address")
+public class UserAddress implements Serializable {
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Address address;
     private Boolean primaryAddress;
 }
