@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class ContactDetails {
 
     @Id
     @Column(name = "contact_details_id", columnDefinition = "Binary(16)")
-    private String contactDetailsId;
+    private UUID contactDetailsId;
 
     @Column(name = "email")
     private String email;

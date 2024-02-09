@@ -1,10 +1,12 @@
 package dev.jasperwiese.roastingCRM.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import dev.jasperwiese.roastingCRM.entity.user.UserAddress;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -17,7 +19,7 @@ public class Address {
 
     @Id
     @Column(name = "address_id", columnDefinition = "BINARY(16)")
-    private String addressId;
+    private UUID addressId;
 
     @Column(name = "building_or_unit_number")
     private String buildingUnitNumber;
@@ -39,4 +41,11 @@ public class Address {
 
     @Column(name = "country")
     private String country;
+
+    @OneToMany(
+            mappedBy = "address",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserAddress> userAddresses = new ArrayList<>();
 }
