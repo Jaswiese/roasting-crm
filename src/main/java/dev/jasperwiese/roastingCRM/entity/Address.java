@@ -1,5 +1,6 @@
 package dev.jasperwiese.roastingCRM.entity;
 
+import dev.jasperwiese.roastingCRM.entity.client.ClientAddress;
 import dev.jasperwiese.roastingCRM.entity.user.UserAddress;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,4 +49,11 @@ public class Address {
             orphanRemoval = true
     )
     private List<UserAddress> userAddresses = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "address",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ClientAddress> clientAddresses = new ArrayList<>();
 }

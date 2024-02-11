@@ -1,26 +1,34 @@
 package dev.jasperwiese.roastingCRM.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-//TODO: Add JPA annotations
+@Entity
 @Table
 public class TargetTemperature {
+    @Id
+    @Column(name = "target_temperature_id")
+    private UUID targetTemperatureId;
 
-    private String targetTemperatureId;
-
+    @Column(name = "preheat")
     private String preheat;
 
+    @Column(name = "first_crack")
     private String firstCrack;
 
+    @Column(name = "development")
     private String development;
 
+    @Column(name = "drop")
     private String drop;
 }

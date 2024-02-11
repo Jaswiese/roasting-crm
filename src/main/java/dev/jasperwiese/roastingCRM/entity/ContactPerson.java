@@ -1,25 +1,51 @@
 package dev.jasperwiese.roastingCRM.entity;
 
-import jakarta.persistence.Table;
+import dev.jasperwiese.roastingCRM.entity.client.ClientContacts;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-//TODO: add JPA annotations
-@Table
+@Entity
+@Table(name = "contact_person")
 public class ContactPerson {
 
-    private String contactPersonId;
+    @Id
+    @Column(
+            name = "contact_person_id",
+            columnDefinition = "Binary(16)"
+    )
+    private UUID contactPersonId;
 
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "position_held")
     private String positionHeld;
 
-    private String contactDetailsId;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "contact_details_id")
+    private ContactDetails contactDetails;
+
+    @OneToMany(
+            mappedBy = "contactPerson",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ClientContacts> clientContacts = new ArrayList<>();
 
 }

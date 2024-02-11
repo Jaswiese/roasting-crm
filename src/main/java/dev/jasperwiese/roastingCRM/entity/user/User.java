@@ -18,7 +18,10 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @Column(name = "user_id", columnDefinition = "Binary(16)")
+    @Column(
+            name = "user_id",
+            columnDefinition = "Binary(16)"
+    )
     private UUID userId;
 
     @Column(name = "verified")
@@ -37,6 +40,7 @@ public class User {
     )
     @JoinColumn(name = "contact_details_id")
     private ContactDetails contactDetails;
+
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "user",
@@ -54,7 +58,11 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JoinColumn(name = "emergency_contact_id")
     private EmergencyContact emergencyContact;
 
