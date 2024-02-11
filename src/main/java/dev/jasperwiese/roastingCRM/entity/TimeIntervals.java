@@ -1,26 +1,35 @@
 package dev.jasperwiese.roastingCRM.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-//TODO: Add JPA annotations
-@Table
+@Entity
+@Table(name = "time_intervals")
 public class TimeIntervals {
 
-    private String timeIntervalsId;
+    @Id
+    @Column(name = "time_intervals_id")
+    private UUID timeIntervalsId;
 
+    @Column(name = "preheat")
     private String preheat;
 
+    @Column(name = "first_crack")
     private String firstCrack;
 
+    @Column(name = "development")
     private String development;
 
+    @Column(name = "total")
     private String total;
 }
