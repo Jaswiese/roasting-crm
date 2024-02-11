@@ -1,32 +1,59 @@
 package dev.jasperwiese.roastingCRM.entity;
 
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-//TODO: add JPA annotations
-@Table
+@Entity
+@Table(name = "roasting_profile")
 public class RoastingProfile {
+    @Id
+    @Column(
+            name = "roasting_profile_id",
+            columnDefinition = "Binary(16)"
+    )
+    private UUID roastingProfileId;
 
-    private String roastingProfileId;
-
+    @Column(name = "profile_name")
     private String profileName;
 
+    @Column(name = "roaster_model")
     private String roasterModel;
 
-    private String beanId;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private GreenBeans greenBeans;
 
-    private String targetTemperatureId;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private TargetTemperature targetTemperature;
 
-    private String timeIntervalsId;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private TimeIntervals timeIntervals;
 
-    private String airflowSettingsId;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private AirflowSettings airflowSettings;
 
+    @Column(name = "notes")
     private String notes;
 }

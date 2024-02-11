@@ -3,7 +3,6 @@ package dev.jasperwiese.roastingCRM.utilities.mappers;
 import dev.jasperwiese.roastingCRM.dto.AddressDto;
 import dev.jasperwiese.roastingCRM.dto.UserDto;
 import dev.jasperwiese.roastingCRM.entity.Address;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
