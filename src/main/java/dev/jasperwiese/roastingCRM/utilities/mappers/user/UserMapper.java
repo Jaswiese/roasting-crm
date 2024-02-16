@@ -1,7 +1,10 @@
-package dev.jasperwiese.roastingCRM.utilities.mappers;
+package dev.jasperwiese.roastingCRM.utilities.mappers.user;
 
 import dev.jasperwiese.roastingCRM.dto.UserDto;
 import dev.jasperwiese.roastingCRM.entity.user.User;
+import dev.jasperwiese.roastingCRM.utilities.mappers.AddressMapper;
+import dev.jasperwiese.roastingCRM.utilities.mappers.ContactDetailsMapper;
+import dev.jasperwiese.roastingCRM.utilities.mappers.EmergencyContactMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

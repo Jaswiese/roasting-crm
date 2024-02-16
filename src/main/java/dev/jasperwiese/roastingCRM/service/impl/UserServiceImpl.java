@@ -12,7 +12,7 @@ import dev.jasperwiese.roastingCRM.repository.EmergencyContactRepository;
 import dev.jasperwiese.roastingCRM.repository.UserRepository;
 import dev.jasperwiese.roastingCRM.service.UserService;
 import dev.jasperwiese.roastingCRM.utilities.mappers.AddressMapper;
-import dev.jasperwiese.roastingCRM.utilities.mappers.UserMapper;
+import dev.jasperwiese.roastingCRM.utilities.mappers.user.UserMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

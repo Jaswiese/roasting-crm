@@ -11,7 +11,9 @@ public class ContactDetailsMapper {
 
     public ContactDetails mapToEntity(ContactDetailsDto contactDto) {
         ContactDetails contactDetails = new ContactDetails();
-        contactDetails.setContactDetailsId(UUID.fromString(contactDto.getContactDetailsId()));
+        if(contactDto.getContactDetailsId() != null && !contactDto.getContactDetailsId().isEmpty()){
+            contactDetails.setContactDetailsId(UUID.fromString(contactDto.getContactDetailsId()));
+        }
         contactDetails.setEmail(contactDto.getEmail());
         contactDetails.setBusinessEmail(contactDto.getBusinessEmail());
         contactDetails.setWorkPhone(contactDto.getWorkPhone());

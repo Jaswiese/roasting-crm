@@ -40,7 +40,7 @@ public class Client {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ClientContacts> clientContacts = new ArrayList<>();
+    private List<ClientContact> clientContacts = new ArrayList<>();
 
     @OneToMany(
             fetch = FetchType.LAZY,

@@ -1,6 +1,6 @@
 package dev.jasperwiese.roastingCRM.entity;
 
-import dev.jasperwiese.roastingCRM.entity.client.ClientContacts;
+import dev.jasperwiese.roastingCRM.entity.client.ClientContact;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -46,6 +46,6 @@ public class ContactPerson {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ClientContacts> clientContacts = new ArrayList<>();
+    private List<ClientContact> clientContacts = new ArrayList<>();
 
 }

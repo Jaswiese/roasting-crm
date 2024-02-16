@@ -13,7 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-//TODO: add JPA annotations
 @Entity
 @Table(name = "contact_details")
 public class ContactDetails {

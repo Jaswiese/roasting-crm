@@ -1,6 +1,7 @@
 package dev.jasperwiese.roastingCRM.entity.client;
 
 import dev.jasperwiese.roastingCRM.entity.Address;
+import dev.jasperwiese.roastingCRM.entity.client.pk.ClientAddressPK;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

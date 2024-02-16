@@ -14,10 +14,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table
+@Table(name = "target_temperature")
 public class TargetTemperature {
+
     @Id
-    @Column(name = "target_temperature_id")
+    @Column(
+            name = "target_temperature_id",
+            columnDefinition = "Binary(16)"
+    )
     private UUID targetTemperatureId;
 
     @Column(name = "preheat")
@@ -29,6 +33,6 @@ public class TargetTemperature {
     @Column(name = "development")
     private String development;
 
-    @Column(name = "drop")
-    private String drop;
+    @Column(name = "drop_temperature")
+    private String dropTemperature;
 }
