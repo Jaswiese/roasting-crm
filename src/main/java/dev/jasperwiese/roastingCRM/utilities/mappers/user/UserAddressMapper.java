@@ -1,8 +1,9 @@
-package dev.jasperwiese.roastingCRM.utilities.mappers;
+package dev.jasperwiese.roastingCRM.utilities.mappers.user;
 
 import dev.jasperwiese.roastingCRM.dto.UserDto;
 import dev.jasperwiese.roastingCRM.entity.Address;
 import dev.jasperwiese.roastingCRM.entity.user.UserAddress;
+import dev.jasperwiese.roastingCRM.utilities.mappers.AddressMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package dev.jasperwiese.roastingCRM.entity.client;
+package dev.jasperwiese.roastingCRM.entity.client.pk;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -15,21 +15,21 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class ClientAddressPK implements Serializable {
+public class ClientContactPK implements Serializable {
 
     private UUID clientId;
-    private UUID addressId;
+    private UUID contactPersonId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientAddressPK that = (ClientAddressPK) o;
-        return Objects.equals(clientId, that.clientId) && Objects.equals(addressId, that.addressId);
+        ClientContactPK that = (ClientContactPK) o;
+        return Objects.equals(clientId, that.clientId) && Objects.equals(contactPersonId, that.contactPersonId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientId, addressId);
+        return Objects.hash(clientId, contactPersonId);
     }
 }

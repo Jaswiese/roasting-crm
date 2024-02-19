@@ -1,6 +1,7 @@
 package dev.jasperwiese.roastingCRM.entity.client;
 
 import dev.jasperwiese.roastingCRM.entity.RoastingProfile;
+import dev.jasperwiese.roastingCRM.entity.client.pk.ClientRoastingProfilesPK;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class ClientRoastingProfiles {
 
     @EmbeddedId
-    private UUID clientId;
+    private ClientRoastingProfilesPK id;
 
     @ManyToOne
     @MapsId("roastingProfileId")

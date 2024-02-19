@@ -18,7 +18,10 @@ import java.util.UUID;
 public class TimeIntervals {
 
     @Id
-    @Column(name = "time_intervals_id")
+    @Column(
+            name = "time_intervals_id",
+            columnDefinition = "Binary(16)"
+    )
     private UUID timeIntervalsId;
 
     @Column(name = "preheat")

@@ -1,7 +1,6 @@
-package dev.jasperwiese.roastingCRM.entity.client;
+package dev.jasperwiese.roastingCRM.entity.client.pk;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,21 +15,21 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class ClientRoastingProfilesPK implements Serializable {
+public class ClientAddressPK implements Serializable {
 
     private UUID clientId;
-    private UUID roastingProfileId;
+    private UUID addressId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientRoastingProfilesPK that = (ClientRoastingProfilesPK) o;
-        return Objects.equals(clientId, that.clientId) && Objects.equals(roastingProfileId, that.roastingProfileId);
+        ClientAddressPK that = (ClientAddressPK) o;
+        return Objects.equals(clientId, that.clientId) && Objects.equals(addressId, that.addressId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientId, roastingProfileId);
+        return Objects.hash(clientId, addressId);
     }
 }

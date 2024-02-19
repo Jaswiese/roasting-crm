@@ -13,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "roasting_profile")
 public class RoastingProfile {
+
     @Id
     @Column(
             name = "roasting_profile_id",

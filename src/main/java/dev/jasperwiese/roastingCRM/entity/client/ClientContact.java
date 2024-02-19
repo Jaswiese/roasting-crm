@@ -1,6 +1,7 @@
 package dev.jasperwiese.roastingCRM.entity.client;
 
 import dev.jasperwiese.roastingCRM.entity.ContactPerson;
+import dev.jasperwiese.roastingCRM.entity.client.pk.ClientContactPK;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "client_contacts")
-public class ClientContacts {
+public class ClientContact {
 
     @EmbeddedId
     private ClientContactPK id;
