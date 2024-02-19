@@ -1,4 +1,4 @@
-package dev.jasperwiese.roastingCRM.controller;
+package dev.jasperwiese.roastingCRM.controller.user;
 
 import dev.jasperwiese.roastingCRM.dto.UserDto;
 import dev.jasperwiese.roastingCRM.service.impl.UserServiceImpl;

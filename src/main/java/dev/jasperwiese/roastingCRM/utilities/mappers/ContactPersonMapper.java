@@ -4,6 +4,8 @@ import dev.jasperwiese.roastingCRM.dto.client.ContactPersonDto;
 import dev.jasperwiese.roastingCRM.entity.ContactPerson;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -17,7 +19,6 @@ public class ContactPersonMapper {
     public ContactPerson mapToEntity(ContactPersonDto contactPersonDto) {
         ContactPerson contactPerson = new ContactPerson();
         if(contactPersonDto.getContactPersonId() != null && !contactPersonDto.getContactPersonId().isEmpty()){
-            System.out.println("hit mapToEntity ContactPerson");
             contactPerson.setContactPersonId(UUID.fromString(contactPersonDto.getContactPersonId()));
         }
         contactPerson.setFirstName(contactPersonDto.getFirstName());
@@ -35,5 +36,21 @@ public class ContactPersonMapper {
         contactPersonDto.setPositionHeld(contactPerson.getPositionHeld());
         contactPersonDto.setContactDetailsDto(contactDetailsMapper.mapToDto(contactPerson.getContactDetails()));
         return contactPersonDto;
+    }
+
+    public List<ContactPerson> mapToEntityList(List<ContactPersonDto> contactPersonDtoList) {
+        List<ContactPerson>  contactPersonList = new ArrayList<>();
+        for (ContactPersonDto contactPersonDto : contactPersonDtoList) {
+            contactPersonList.add(mapToEntity(contactPersonDto));
+        }
+        return contactPersonList;
+    }
+
+    public List<ContactPersonDto> mapToDtoList(List<ContactPerson> contactPersonList) {
+        List<ContactPersonDto> contactPersonDtoList = new ArrayList<>();
+        for(ContactPerson contactPerson : contactPersonList) {
+            contactPersonDtoList.add(mapToDto(contactPerson));
+        }
+        return contactPersonDtoList;
     }
 }

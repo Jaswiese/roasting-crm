@@ -1,7 +1,9 @@
 package dev.jasperwiese.roastingCRM.service.impl;
 
 import dev.jasperwiese.roastingCRM.dto.AddressDto;
+import dev.jasperwiese.roastingCRM.dto.client.ClientAddRoastingProfileRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientCreationRequest;
+import dev.jasperwiese.roastingCRM.dto.client.ClientDto;
 import dev.jasperwiese.roastingCRM.dto.client.ContactPersonDto;
 import dev.jasperwiese.roastingCRM.entity.Address;
 import dev.jasperwiese.roastingCRM.entity.ContactDetails;
@@ -15,6 +17,7 @@ import dev.jasperwiese.roastingCRM.repository.*;
 import dev.jasperwiese.roastingCRM.service.ClientService;
 import dev.jasperwiese.roastingCRM.utilities.mappers.AddressMapper;
 import dev.jasperwiese.roastingCRM.utilities.mappers.ContactPersonMapper;
+import dev.jasperwiese.roastingCRM.utilities.mappers.client.ClientMapper;
 import dev.jasperwiese.roastingCRM.utilities.mappers.client.ClientRequestMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +28,14 @@ import java.util.UUID;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    private ClientRepository clientRepository;
-    private ContactPersonRepository contactPersonRepository;
-    private ContactDetailsRepository contactDetailsRepository;
-    private AddressRepository addressRepository;
-    private AddressMapper addressMapper;
-    private ContactPersonMapper contactPersonMapper;
-    private ClientRequestMapper clientRequestMapper;
+    private final ClientRepository clientRepository;
+    private final ContactPersonRepository contactPersonRepository;
+    private final ContactDetailsRepository contactDetailsRepository;
+    private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
+    private final ContactPersonMapper contactPersonMapper;
+    private final ClientRequestMapper clientRequestMapper;
+    private final ClientMapper clientMapper;
 
     public ClientServiceImpl(ClientRepository clientRepository,
                              ContactPersonRepository contactPersonRepository,
@@ -39,7 +43,8 @@ public class ClientServiceImpl implements ClientService {
                              AddressRepository addressRepository,
                              AddressMapper addressMapper,
                              ContactPersonMapper contactPersonMapper,
-                             ClientRequestMapper clientRequestMapper) {
+                             ClientRequestMapper clientRequestMapper,
+                             ClientMapper clientMapper) {
         this.clientRepository = clientRepository;
         this.contactPersonRepository = contactPersonRepository;
         this.contactDetailsRepository = contactDetailsRepository;
@@ -47,6 +52,7 @@ public class ClientServiceImpl implements ClientService {
         this.addressMapper = addressMapper;
         this.contactPersonMapper = contactPersonMapper;
         this.clientRequestMapper = clientRequestMapper;
+        this.clientMapper = clientMapper;
     }
 
     @Override
@@ -60,49 +66,75 @@ public class ClientServiceImpl implements ClientService {
 
         List<Address> addressList = new ArrayList<>();
         List<AddressDto> addressDtoList = clientCreationRequest.getAddressDtoList();
-        //AddressDto -> ClientAddress
-        for (int i = 0; i < addressDtoList.size() ; i++) {
 
-            Address address = addressMapper.mapToEntity(addressDtoList.get(i));
+        if(addressDtoList != null && !addressDtoList.isEmpty()) {
+            //AddressDto -> ClientAddress
+            for (int i = 0; i < addressDtoList.size() ; i++) {
 
-            address.setAddressId(UUID.randomUUID());
+                Address address = addressMapper.mapToEntity(addressDtoList.get(i));
 
-            address = addressRepository.save(address);
+                address.setAddressId(UUID.randomUUID());
 
-            ClientAddress clientAddress = new ClientAddress();
-            clientAddress.setId(new ClientAddressPK(client.getClientId(), address.getAddressId()));
-            clientAddress.setClient(client);
-            clientAddress.setAddress(address);
-            client.getAddresses().add(clientAddress);
+                address = addressRepository.save(address);
+
+                ClientAddress clientAddress = new ClientAddress();
+                clientAddress.setId(new ClientAddressPK(client.getClientId(), address.getAddressId()));
+                clientAddress.setClient(client);
+                clientAddress.setAddress(address);
+                client.getAddresses().add(clientAddress);
+            }
         }
 
         List<ContactPersonDto> contactPersonDtoList = clientCreationRequest.getClientContactDtoList();
-        //ContactPersonDto -> ClientContacts
-        for (int i = 0; i < contactPersonDtoList.size(); i++) {
 
-            ContactPerson contactPerson = contactPersonMapper.mapToEntity(contactPersonDtoList.get(i));
+        if(contactPersonDtoList != null && !contactPersonDtoList.isEmpty()) {
+            //ContactPersonDto -> ClientContacts
+            for (int i = 0; i < contactPersonDtoList.size(); i++) {
 
-            //Set Ids
-            contactPerson.setContactPersonId(UUID.randomUUID());
-            ContactDetails contactDetails = contactPerson.getContactDetails();
-            contactDetails.setContactDetailsId(UUID.randomUUID());
+                ContactPerson contactPerson = contactPersonMapper.mapToEntity(contactPersonDtoList.get(i));
+                //Set Ids
+                contactPerson.setContactPersonId(UUID.randomUUID());
+                ContactDetails contactDetails = contactPerson.getContactDetails();
+                contactDetails.setContactDetailsId(UUID.randomUUID());
 
-            contactDetails = contactDetailsRepository.save(contactDetails);
+                contactDetails = contactDetailsRepository.save(contactDetails);
 
-            contactPerson.setContactDetails(contactDetails);
+                contactPerson.setContactDetails(contactDetails);
 
-            contactPerson = contactPersonRepository.save(contactPerson);
+                contactPerson = contactPersonRepository.save(contactPerson);
 
-            ClientContact clientContact = new ClientContact();
-            clientContact.setId(new ClientContactPK(client.getClientId(), contactPerson.getContactPersonId()));
-            clientContact.setClient(client);
-            clientContact.setContactPerson(contactPerson);
+                ClientContact clientContact = new ClientContact();
+                clientContact.setId(new ClientContactPK(client.getClientId(), contactPerson.getContactPersonId()));
+                clientContact.setClient(client);
+                clientContact.setContactPerson(contactPerson);
 
-            client.getClientContacts().add(clientContact);
+                client.getClientContacts().add(clientContact);
+            }
         }
 
-        client = clientRepository.save(client);
+            client = clientRepository.save(client);
 
-        return clientRequestMapper.mapClientToCreationRequest(client);
+            return clientRequestMapper.mapClientToCreationRequest(client);
+
+    }
+
+    public List<ClientDto> getAllClients(){
+        List<Client> clientList = clientRepository.findAll();
+        List<ClientDto> clientDtoList = new ArrayList<>();
+        for (int i = 0; i < clientList.size(); i++) {
+            ClientDto clientDto = clientMapper.mapToDto(clientList.get(i));
+            clientDtoList.add(clientDto);
+        }
+        return clientDtoList;
+    }
+
+    @Override
+    public ClientDto findClientById() {
+        return null;
+    }
+
+    @Override
+    public ClientAddRoastingProfileRequest addRoastingProfile() {
+        return null;
     }
 }

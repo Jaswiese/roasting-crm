@@ -25,4 +25,12 @@ public class ClientAddressMapper {
         }
         return addressDtoList;
     }
+
+    public List<ClientAddress> mapAddressDtoListToClientAddressList(List<AddressDto> addressDtoList) {
+        List<ClientAddress> clientAddressList = new ArrayList<>();
+        for(AddressDto addressDto : addressDtoList) {
+            clientAddressList.add(ClientAddress.builder().address(addressMapper.mapToEntity(addressDto)).build());
+        }
+        return clientAddressList;
+    }
 }

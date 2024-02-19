@@ -1,13 +1,14 @@
 package dev.jasperwiese.roastingCRM.controller.client;
 
+import dev.jasperwiese.roastingCRM.dto.client.ClientAddRoastingProfileRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientCreationRequest;
+import dev.jasperwiese.roastingCRM.dto.client.ClientDto;
 import dev.jasperwiese.roastingCRM.service.impl.ClientServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -22,5 +23,16 @@ public class ClientControllerV1 {
     @PostMapping("client/create")
     public ResponseEntity<ClientCreationRequest> createClient(@RequestBody ClientCreationRequest clientCreationRequest) {
         return new ResponseEntity<>(clientService.createClient(clientCreationRequest), HttpStatus.OK);
+    }
+
+    @GetMapping("client/all")
+    public ResponseEntity<List<ClientDto>> getAllClients(){
+        return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
+    }
+
+    @PostMapping("client/add/roastingprofile")
+    public ResponseEntity<ClientAddRoastingProfileRequest> addRoastingProfile(
+            @RequestBody ClientAddRoastingProfileRequest clientAddRoastingProfileRequest) {
+        return new ResponseEntity<>(clientService.addRoastingProfile(), HttpStatus.CREATED);
     }
 }
