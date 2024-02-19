@@ -12,7 +12,7 @@ public interface ClientService {
 
    List<ClientDto> getAllClients();
 
-   ClientDto findClientById();
+   ClientDto findClientById(String clientId);
 
    ClientAddRoastingProfileRequest addRoastingProfile();
 }
