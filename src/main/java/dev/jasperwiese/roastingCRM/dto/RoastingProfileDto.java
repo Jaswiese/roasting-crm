@@ -1,6 +1,5 @@
 package dev.jasperwiese.roastingCRM.dto;
 
-import dev.jasperwiese.roastingCRM.entity.GreenBeans;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

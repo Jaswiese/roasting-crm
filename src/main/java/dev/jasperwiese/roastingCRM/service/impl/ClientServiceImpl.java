@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -129,8 +130,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDto findClientById() {
-        return null;
+    public ClientDto findClientById(String clientId) {
+        ClientDto clientDto = new ClientDto();
+        Optional<Client> client = clientRepository.findById(UUID.fromString(clientId));
+        if (client.isPresent()) {
+            return  clientDto = clientMapper.mapToDto(client.get());
+        }
+        throw new RuntimeException("client not found");
     }
 
     @Override

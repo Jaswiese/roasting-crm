@@ -30,6 +30,11 @@ public class ClientControllerV1 {
         return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
     }
 
+    @GetMapping("client/{clientId}")
+    public ResponseEntity<ClientDto> getClientById(@PathVariable String clientId) {
+        return new ResponseEntity<>(clientService.findClientById(clientId), HttpStatus.OK);
+    }
+
     @PostMapping("client/add/roastingprofile")
     public ResponseEntity<ClientAddRoastingProfileRequest> addRoastingProfile(
             @RequestBody ClientAddRoastingProfileRequest clientAddRoastingProfileRequest) {

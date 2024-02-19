@@ -10,15 +10,18 @@ import java.util.UUID;
 @Component
 public class ClientMapper {
 
-    private ClientAddressMapper clientAddressMapper;
-    private ClientContactMapper clientContactMapper;
-    private RoastingProfileMapper roastingProfileMapper;
+    private final ClientAddressMapper clientAddressMapper;
+    private final ClientContactMapper clientContactMapper;
+    private final RoastingProfileMapper roastingProfileMapper;
+    private final ClientRoastingProfileMapper clientRoastingProfileMapper;
     public ClientMapper(ClientAddressMapper clientAddressMapper,
                         ClientContactMapper clientContactMapper,
-                        RoastingProfileMapper roastingProfileMapper) {
+                        RoastingProfileMapper roastingProfileMapper,
+                        ClientRoastingProfileMapper clientRoastingProfileMapper) {
         this.clientAddressMapper = clientAddressMapper;
         this.clientContactMapper = clientContactMapper;
         this.roastingProfileMapper = roastingProfileMapper;
+        this.clientRoastingProfileMapper = clientRoastingProfileMapper;
     }
 
     public Client mapToEntity(ClientDto clientDto) {
@@ -26,11 +29,22 @@ public class ClientMapper {
         if(clientDto.getClientId() != null && !clientDto.getClientId().isEmpty()) {
             client.setClientId(UUID.fromString(clientDto.getClientId()));
         }
+
         client.setCompanyName(clientDto.getCompanyName());
         client.setVatNumber(clientDto.getVatNumber());
-        client.setAddresses(clientAddressMapper.mapAddressDtoListToClientAddressList(clientDto.getAddressDtoList()));
-        client.setClientContacts(clientContactMapper.mapContactPersonDtoListToClientContactList(clientDto.getContactPersonDtoList()));
-        //client.setClientRoastingProfiles(clientDto.getRoastingProfileDtoList());
+
+        if(clientDto.getAddressDtoList() != null && !clientDto.getAddressDtoList().isEmpty()) {
+            client.setAddresses(clientAddressMapper.mapAddressDtoListToClientAddressList(clientDto.getAddressDtoList()));
+        }
+
+        if (clientDto.getContactPersonDtoList() != null && !clientDto.getContactPersonDtoList().isEmpty()){
+            client.setClientContacts(clientContactMapper.mapContactPersonDtoListToClientContactList(clientDto.getContactPersonDtoList()));
+        }
+
+        if(clientDto.getRoastingProfileDtoList() != null && !clientDto.getRoastingProfileDtoList().isEmpty()) {
+            client.setClientRoastingProfiles(clientRoastingProfileMapper.mapRoastingProfileDtoListToClientRoastingProfilesList(clientDto.getRoastingProfileDtoList()));
+        }
+
         return client;
     }
 
@@ -39,9 +53,19 @@ public class ClientMapper {
         clientDto.setClientId(String.valueOf(client.getClientId()));
         clientDto.setCompanyName(client.getCompanyName());
         clientDto.setVatNumber(client.getVatNumber());
-        clientDto.setAddressDtoList(clientAddressMapper.mapClientAddressListToAddressDtoList(client.getAddresses()));
-        clientDto.setContactPersonDtoList(clientContactMapper.mapClientContactListToContactPersonDtoList(client.getClientContacts()));
-        //clientDto.setRoastingProfileDtoList(client.getClientRoastingProfiles());
+
+        if(client.getAddresses() != null && !client.getAddresses().isEmpty()) {
+            clientDto.setAddressDtoList(clientAddressMapper.mapClientAddressListToAddressDtoList(client.getAddresses()));
+        }
+
+        if(client.getClientContacts() != null && !client.getClientContacts().isEmpty()) {
+            clientDto.setContactPersonDtoList(clientContactMapper.mapClientContactListToContactPersonDtoList(client.getClientContacts()));
+        }
+
+        if(client.getClientRoastingProfiles() != null && !client.getClientRoastingProfiles().isEmpty()) {
+            clientDto.setRoastingProfileDtoList(clientRoastingProfileMapper.mapClientRoastingProfilesListToRoastingProfileDtoList(client.getClientRoastingProfiles()));
+        }
+
         return clientDto;
     }
 }
