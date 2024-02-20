@@ -1,8 +1,11 @@
 package dev.jasperwiese.roastingCRM.entity;
 
+import dev.jasperwiese.roastingCRM.entity.client.ClientRoastingProfiles;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -57,4 +60,12 @@ public class RoastingProfile {
 
     @Column(name = "notes")
     private String notes;
+
+    @OneToMany(
+            mappedBy = "roastingProfile",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ClientRoastingProfiles> clientRoastingProfiles = new ArrayList<>();
+
 }

@@ -1,6 +1,5 @@
 package dev.jasperwiese.roastingCRM.controller.client;
 
-import dev.jasperwiese.roastingCRM.dto.client.ClientAddRoastingProfileRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientCreationRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientDto;
 import dev.jasperwiese.roastingCRM.service.impl.ClientServiceImpl;
@@ -35,9 +34,4 @@ public class ClientControllerV1 {
         return new ResponseEntity<>(clientService.findClientById(clientId), HttpStatus.OK);
     }
 
-    @PostMapping("client/add/roastingprofile")
-    public ResponseEntity<ClientAddRoastingProfileRequest> addRoastingProfile(
-            @RequestBody ClientAddRoastingProfileRequest clientAddRoastingProfileRequest) {
-        return new ResponseEntity<>(clientService.addRoastingProfile(), HttpStatus.CREATED);
-    }
 }
