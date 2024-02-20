@@ -10,7 +10,7 @@ import java.util.UUID;
 @Component
 public class RoastingProfileValidator {
 
-    private RoastingProfileRepository roastingProfileRepository;
+    private final RoastingProfileRepository roastingProfileRepository;
 
     public RoastingProfileValidator(RoastingProfileRepository roastingProfileRepository) {
         this.roastingProfileRepository = roastingProfileRepository;

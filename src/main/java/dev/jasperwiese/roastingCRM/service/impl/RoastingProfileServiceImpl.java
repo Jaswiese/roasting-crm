@@ -11,10 +11,12 @@ import dev.jasperwiese.roastingCRM.repository.ClientRoastingProfileRepository;
 import dev.jasperwiese.roastingCRM.repository.RoastingProfileRepository;
 import dev.jasperwiese.roastingCRM.service.RoastingProfileService;
 import dev.jasperwiese.roastingCRM.utilities.mappers.roastingMappers.RoastingProfileMapper;
+import dev.jasperwiese.roastingCRM.utilities.validators.ClientValidator;
 import dev.jasperwiese.roastingCRM.utilities.validators.RoastingProfileValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,17 +33,21 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
 
     private final RoastingProfileValidator roastingProfileValidator;
 
+    private final ClientValidator clientValidator;
+
     public RoastingProfileServiceImpl(
             RoastingProfileRepository roastingProfileRepository,
             ClientRepository clientRepository,
             RoastingProfileMapper roastingProfileMapper,
             ClientRoastingProfileRepository clientRoastingProfileRepository,
-            RoastingProfileValidator roastingProfileValidator) {
+            RoastingProfileValidator roastingProfileValidator,
+            ClientValidator clientValidator) {
         this.roastingProfileRepository = roastingProfileRepository;
         this.clientRepository = clientRepository;
         this.roastingProfileMapper = roastingProfileMapper;
         this.clientRoastingProfileRepository = clientRoastingProfileRepository;
         this.roastingProfileValidator = roastingProfileValidator;
+        this.clientValidator = clientValidator;
     }
     @Transactional
     @Override
@@ -67,6 +73,17 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
         return roastingProfileDto;
     }
 
+    @Override
+    public List<RoastingProfileDto> getAllRoastingProfiles() {
+        List<RoastingProfile> roastingProfileList = roastingProfileRepository.findAll();
+        List<RoastingProfileDto> roastingProfileDtoList = new ArrayList<>();
+        for (RoastingProfile roastingProfile : roastingProfileList) {
+            RoastingProfileDto roastingProfileDto = roastingProfileMapper.mapToDto(roastingProfile);
+            roastingProfileDtoList.add(roastingProfileDto);
+        }
+        return roastingProfileDtoList;
+    }
+
     @Transactional
     @Override
     public RoastingProfileDto getRoastingProfileById(String roastingProfileId) {
@@ -76,16 +93,20 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
 
     @Override
     public List<RoastingProfileDto> getAllRoastingProfilesOfClient(String clientId) {
-        return null;
+        List<ClientRoastingProfiles> clientRoastingProfilesList = clientRoastingProfileRepository.findClientRoastingProfilesByClientClientId(UUID.fromString(clientId));
+        List<RoastingProfileDto> roastingProfileDtoList = new ArrayList<>();
+        for (ClientRoastingProfiles clientRoastingProfiles : clientRoastingProfilesList) {
+            RoastingProfile roastingProfile = clientRoastingProfiles.getRoastingProfile();
+            RoastingProfileDto roastingProfileDto = roastingProfileMapper.mapToDto(roastingProfile);
+            roastingProfileDtoList.add(roastingProfileDto);
+        }
+        return roastingProfileDtoList;
     }
 
     @Override
-    public Integer deleteRoastingProfileById(String roastingProfileId) {
-        return null;
+    public void deleteRoastingProfileById(String roastingProfileId) {
+      RoastingProfile roastingProfile = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
+      roastingProfileRepository.delete(roastingProfile);
     }
 
-    @Override
-    public Integer deleteAllRoastingProfilesOfClient(String clientId) {
-        return null;
-    }
 }
