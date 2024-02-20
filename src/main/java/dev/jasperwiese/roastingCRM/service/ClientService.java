@@ -1,6 +1,5 @@
 package dev.jasperwiese.roastingCRM.service;
 
-import dev.jasperwiese.roastingCRM.dto.client.ClientAddRoastingProfileRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientCreationRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientDto;
 
@@ -14,5 +13,4 @@ public interface ClientService {
 
    ClientDto findClientById(String clientId);
 
-   ClientAddRoastingProfileRequest addRoastingProfile();
 }

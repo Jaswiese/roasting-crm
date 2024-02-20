@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto createUser(UserDto userDto) {
-        System.out.println(userDto);
+
         userDto.setUserId(UUID.randomUUID().toString());
         userDto.getContactDetailsDto().setContactDetailsId(UUID.randomUUID().toString());
         userDto.getEmergencyContactDto().setEmergencyContactId(UUID.randomUUID().toString());
@@ -65,23 +65,20 @@ public class UserServiceImpl implements UserService {
             addressDto.setAddressId(UUID.randomUUID().toString());
             Address address = addressMapper.mapToEntity(addressDto);
 
-            System.out.println(address);
             address = addressRepository.save(address);
 
             UserAddress userAddress = new UserAddress();
             userAddress.setId(new UserAddressPK(user.getUserId(), address.getAddressId()));
             userAddress.setUser(user);
             userAddress.setAddress(address);
-            System.out.println(userAddress);
             user.getAddresses().add(userAddress);
         }
-        System.out.println(user);
         user = userRepository.save(user);
 
 
         return userMapper.mapToDto(user);
     }
-
+    @Transactional
     @Override
     public List<UserDto> getUsers() {
         List<User> users = userRepository.findAll();
@@ -89,7 +86,7 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::mapToDto)
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     @Override
     public UserDto getUserById(String userId) {
         Optional<User> userOptional = userRepository.findById(UUID.fromString(userId));

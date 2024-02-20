@@ -1,7 +1,6 @@
 package dev.jasperwiese.roastingCRM.service.impl;
 
 import dev.jasperwiese.roastingCRM.dto.AddressDto;
-import dev.jasperwiese.roastingCRM.dto.client.ClientAddRoastingProfileRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientCreationRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientDto;
 import dev.jasperwiese.roastingCRM.dto.client.ContactPersonDto;
@@ -20,6 +19,7 @@ import dev.jasperwiese.roastingCRM.utilities.mappers.ContactPersonMapper;
 import dev.jasperwiese.roastingCRM.utilities.mappers.client.ClientMapper;
 import dev.jasperwiese.roastingCRM.utilities.mappers.client.ClientRequestMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ClientServiceImpl implements ClientService {
         this.clientRequestMapper = clientRequestMapper;
         this.clientMapper = clientMapper;
     }
-
+    @Transactional
     @Override
     public ClientCreationRequest createClient(ClientCreationRequest clientCreationRequest) {
 
@@ -118,7 +118,7 @@ public class ClientServiceImpl implements ClientService {
             return clientRequestMapper.mapClientToCreationRequest(client);
 
     }
-
+    @Transactional
     public List<ClientDto> getAllClients(){
         List<Client> clientList = clientRepository.findAll();
         List<ClientDto> clientDtoList = new ArrayList<>();
@@ -128,7 +128,7 @@ public class ClientServiceImpl implements ClientService {
         }
         return clientDtoList;
     }
-
+    @Transactional
     @Override
     public ClientDto findClientById(String clientId) {
         ClientDto clientDto = new ClientDto();
@@ -139,8 +139,4 @@ public class ClientServiceImpl implements ClientService {
         throw new RuntimeException("client not found");
     }
 
-    @Override
-    public ClientAddRoastingProfileRequest addRoastingProfile() {
-        return null;
-    }
 }

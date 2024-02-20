@@ -1,4 +1,4 @@
-package dev.jasperwiese.roastingCRM.dto.client;
+package dev.jasperwiese.roastingCRM.dto.roastingProfile;
 
 import dev.jasperwiese.roastingCRM.dto.RoastingProfileDto;
 import lombok.*;
