@@ -29,6 +29,7 @@ public class GreenbeansMapper {
 
     public  GreenBeansDto mapToDto(GreenBeans greenBeans) {
         return GreenBeansDto.builder()
+                //this should never be null due to database constraint
                 .greenBeansId(String.valueOf(greenBeans.getGreenBeansId()))
                 .field(greenBeans.getField())
                 .region(greenBeans.getRegion())
