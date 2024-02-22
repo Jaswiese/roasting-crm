@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Component
 public class ContactPersonMapper {
-    private ContactDetailsMapper contactDetailsMapper;
+    private final ContactDetailsMapper contactDetailsMapper;
 
     public ContactPersonMapper(ContactDetailsMapper contactDetailsMapper) {
         this.contactDetailsMapper = contactDetailsMapper;

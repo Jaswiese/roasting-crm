@@ -44,8 +44,7 @@ public class AddressMapper {
     }
 
     public Address mapToEntity(AddressDto addressDto) {
-        //rewrite without builder pattern due to null pointer errors in transit
-        //
+
         Address address = new Address();
         if(addressDto.getAddressId() != null && !addressDto.getAddressId().isEmpty()) {
             address.setAddressId(UUID.fromString(addressDto.getAddressId()));
@@ -68,6 +67,7 @@ public class AddressMapper {
                 .districtSuburb(address.getDistrictSuburb())
                 .city(address.getCity())
                 .stateProvince(address.getStateProvince())
+                .postalCode(address.getPostalCode())
                 .country(address.getCountry())
                 .build();
     }
