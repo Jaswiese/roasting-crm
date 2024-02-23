@@ -25,7 +25,7 @@ public class TimeIntervalsMapper {
         return TimeIntervalsDto.builder()
                 .timeIntervalsId(String.valueOf(timeIntervals.getTimeIntervalsId()))
                 .preheat(timeIntervals.getPreheat())
-                .firstCrack(timeIntervals.getPreheat())
+                .firstCrack(timeIntervals.getFirstCrack())
                 .development(timeIntervals.getDevelopment())
                 .total(timeIntervals.getTotal())
                 .build();
