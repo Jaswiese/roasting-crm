@@ -41,7 +41,7 @@ public class RoastingProfileMapper {
         roastingProfile.setAirflowSettings(airFlowSettingsMapper.mapToEntity(roastingProfileDto.getAirFlowSettingsDto()));
         //time mapper
         roastingProfile.setTimeIntervals(timeIntervalsMapper.mapToEntity(roastingProfileDto.getTimeIntervalsDto()));
-
+        roastingProfile.setNotes(roastingProfileDto.getNotes());
         return roastingProfile;
     }
 
@@ -50,11 +50,12 @@ public class RoastingProfileMapper {
         roastingProfileDto.setRoastingProfileId(roastingProfile.getRoastingProfileId().toString());
         roastingProfileDto.setProfileName(roastingProfile.getProfileName());
         roastingProfileDto.setRoasterModel(roastingProfile.getRoasterModel());
+
         roastingProfileDto.setGreenBeansDto(greenbeansMapper.mapToDto(roastingProfile.getGreenBeans()));
         roastingProfileDto.setTargetTemperatureDto(targetTemperatureMapper.mapToDto(roastingProfile.getTargetTemperature()));
         roastingProfileDto.setAirFlowSettingsDto(airFlowSettingsMapper.mapToDto(roastingProfile.getAirflowSettings()));
         roastingProfileDto.setTimeIntervalsDto(timeIntervalsMapper.mapToDto(roastingProfile.getTimeIntervals()));
-
+        roastingProfileDto.setNotes(roastingProfile.getNotes());
         return roastingProfileDto;
     }
 }

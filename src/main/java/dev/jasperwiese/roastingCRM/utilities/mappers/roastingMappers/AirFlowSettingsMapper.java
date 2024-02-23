@@ -14,6 +14,9 @@ public class AirFlowSettingsMapper {
         if(airFlowSettingsDto.getAirFlowSettingsId() != null && !airFlowSettingsDto.getAirFlowSettingsId().isEmpty()){
             airflowSettings.setAirflowSettingsId(UUID.fromString(airFlowSettingsDto.getAirFlowSettingsId()));
         }
+        airflowSettings.setLow(airFlowSettingsDto.getLow());
+        airflowSettings.setMedium(airFlowSettingsDto.getMedium());
+        airflowSettings.setHigh(airFlowSettingsDto.getHigh());
         return airflowSettings;
     }
 
