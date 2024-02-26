@@ -18,17 +18,6 @@ public class UserAddressMapper {
         this.addressMapper = addressMapper;
     }
 
-    public List<UserAddress> mapUserDtoToUserAddressList (UserDto userDto) {
-        List<Address> addresses = addressMapper.mapToAddressEntityFromUserDto(userDto);
-        List<UserAddress> userAddresses = new ArrayList<>();
-        for (int i = 0; i < addresses.size(); i++) {
-            UserAddress userAddress = new UserAddress();
-            userAddress.setAddress(addresses.get(i));
-            userAddresses.add(userAddress);
-        }
-        return userAddresses;
-    }
-
     public List<Address> mapUserAddressListToAddressList(List<UserAddress> addresses) {
         List<Address> addressList = new ArrayList<>();
         for (UserAddress userAddress : addresses) {
