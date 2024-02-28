@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientRequestMapper {
 
-    private ClientAddressMapper clientAddressMapper;
-    private ClientContactMapper clientContactMapper;
+    private final ClientAddressMapper clientAddressMapper;
+    private final ClientContactMapper clientContactMapper;
 
     public ClientRequestMapper(ClientAddressMapper clientAddressMapper, ClientContactMapper clientContactMapper) {
         this.clientAddressMapper = clientAddressMapper;
