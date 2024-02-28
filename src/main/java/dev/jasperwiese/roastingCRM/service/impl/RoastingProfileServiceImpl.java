@@ -87,8 +87,18 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
     @Transactional
     @Override
     public RoastingProfileDto getRoastingProfileById(String roastingProfileId) {
-        RoastingProfile roastingProfile = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
-        return roastingProfileMapper.mapToDto(roastingProfile);
+
+        boolean roastingProfileExists = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
+        if(!roastingProfileExists) {
+            throw new RuntimeException("Roasting profile does not exist");
+        }
+        Optional<RoastingProfile> roastingProfile = roastingProfileRepository.findById(UUID.fromString(roastingProfileId));
+        if(roastingProfile.isEmpty()) {
+            throw new RuntimeException("Roasting profile does not exist");
+        }
+        return roastingProfileMapper.mapToDto(roastingProfile.get());
+
+
     }
 
     @Override
@@ -105,8 +115,11 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
 
     @Override
     public void deleteRoastingProfileById(String roastingProfileId) {
-      RoastingProfile roastingProfile = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
-      roastingProfileRepository.delete(roastingProfile);
+      boolean roastingProfileExists = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
+      if(!roastingProfileExists) {
+          throw new RuntimeException("Roasting profile does not exist");
+      }
+      roastingProfileRepository.deleteById(UUID.fromString(roastingProfileId));
     }
 
 }
