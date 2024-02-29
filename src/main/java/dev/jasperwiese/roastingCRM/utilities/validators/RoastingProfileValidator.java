@@ -16,13 +16,7 @@ public class RoastingProfileValidator {
         this.roastingProfileRepository = roastingProfileRepository;
     }
 
-    public RoastingProfile validateIfRoastingProfileExists(String roastingProfileId) {
-
-        Optional<RoastingProfile> roastingProfileOptional = roastingProfileRepository.findById(
-                UUID.fromString(roastingProfileId));
-        if(roastingProfileOptional.isEmpty()) {
-            throw new RuntimeException("Roasting profile not found");
-        }
-        return roastingProfileOptional.get();
+    public boolean validateIfRoastingProfileExists(String roastingProfileId) {
+        return roastingProfileRepository.existsById(UUID.fromString(roastingProfileId));
     }
 }

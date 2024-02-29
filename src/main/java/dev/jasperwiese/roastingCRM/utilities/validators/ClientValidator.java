@@ -21,13 +21,12 @@ public class ClientValidator {
         Optional<Client> clientOptional = clientRepository.findById(UUID.fromString(clientId));
 
         if (clientOptional.isEmpty()) {
-            throw new IllegalArgumentException("Client does not exist");
+            throw new RuntimeException("Client does not exist");
         }
         return clientOptional.get();
     }
 
     public Boolean validateIfClientExistsBool(String clientId) {
-        Optional<Client> clientOptional = clientRepository.findById(UUID.fromString(clientId));
-        return clientOptional.isPresent();
+        return clientRepository.existsById(UUID.fromString(clientId));
     }
 }
