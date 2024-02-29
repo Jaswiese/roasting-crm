@@ -15,7 +15,7 @@ import java.util.UUID;
 @ToString
 @Entity
 @Table(name = "contact_person")
-public class ContactPerson {
+public class  ContactPerson {
 
     @Id
     @Column(

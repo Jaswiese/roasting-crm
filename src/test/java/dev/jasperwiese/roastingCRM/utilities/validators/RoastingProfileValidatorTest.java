@@ -42,7 +42,7 @@ class RoastingProfileValidatorTest {
     }
 
     @Test
-    void itShouldThrowRuntimeExceptionIfRoastingProfileDoesNotExist(){
+    void itShouldReturnAFalseIfRoastingProfileDoesNotExist(){
         //Given
         when(roastingProfileRepositoryMock.existsById(any(UUID.class))).thenReturn(false);
         //When
