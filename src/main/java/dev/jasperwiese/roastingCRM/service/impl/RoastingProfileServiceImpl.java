@@ -55,20 +55,26 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
         RoastingProfileDto roastingProfileDto = clientAddRoastingProfileRequest.getRoastingProfileDto();
         roastingProfileDto.setRoastingProfileId(String.valueOf(UUID.randomUUID()));
         //check if client exists
+        //TODO: use clientValidator.
         Optional<Client> clientOptional = clientRepository.findById(UUID.fromString(clientAddRoastingProfileRequest.getClientId()));
         if(!clientOptional.isPresent() && clientOptional.isEmpty()) {
             throw new RuntimeException();
         }
+        //Saving roastingProfile to database
         RoastingProfile roastingProfile = roastingProfileRepository.save(roastingProfileMapper.mapToEntity(roastingProfileDto));
         //create ClientRoastingProfile
         ClientRoastingProfiles clientRoastingProfiles = ClientRoastingProfiles.builder()
-                .id(new ClientRoastingProfilesPK(UUID.fromString(roastingProfileDto.getRoastingProfileId()), clientOptional.get().getClientId()))
+                .id(new ClientRoastingProfilesPK(
+                        clientOptional.get().getClientId(),
+                        UUID.fromString(roastingProfileDto.getRoastingProfileId())
+                        )
+                )
                 .profileName(clientAddRoastingProfileRequest.getProfileName())
                 .client(clientOptional.get())
-                .roastingProfile(roastingProfileMapper.mapToEntity(roastingProfileDto))
+                .roastingProfile(roastingProfile)
                 .notes(clientAddRoastingProfileRequest.getNotes())
                 .build();
-        //save roastingProfile & save ClientRoastingProfiles
+        //save ClientRoastingProfiles
         ClientRoastingProfiles clientRoastingProfilesSaved = clientRoastingProfileRepository.save(clientRoastingProfiles);
         return roastingProfileDto;
     }
