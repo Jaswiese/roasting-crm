@@ -58,7 +58,7 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
         //TODO: use clientValidator.
         Optional<Client> clientOptional = clientRepository.findById(UUID.fromString(clientAddRoastingProfileRequest.getClientId()));
         if(!clientOptional.isPresent() && clientOptional.isEmpty()) {
-            throw new RuntimeException();
+            throw new RuntimeException("Client does not exist");
         }
         //Saving roastingProfile to database
         RoastingProfile roastingProfile = roastingProfileRepository.save(roastingProfileMapper.mapToEntity(roastingProfileDto));

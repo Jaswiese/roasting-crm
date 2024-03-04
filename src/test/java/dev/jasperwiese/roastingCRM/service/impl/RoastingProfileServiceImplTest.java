@@ -23,10 +23,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
@@ -237,8 +239,20 @@ class RoastingProfileServiceImplTest {
     }
 
     @Test
+    void itShouldNotSaveClientRoastingProfileIfClientDoesNotExist() {
+        //Given
+        given(clientRepository.findById(any())).willReturn(Optional.empty());
+        //When
+        assertThatThrownBy(() -> underTest.createClientRoastingProfile(clientAddRoastingProfileRequest))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Client does not exist");
+        //Then
+    }
+
+    @Test
     void itShouldGetAllRoastingProfiles() {
         //Given
+        given(roastingProfileRepository.findAll()).willReturn(Collections.emptyList());
         //When
         //Then
     }
