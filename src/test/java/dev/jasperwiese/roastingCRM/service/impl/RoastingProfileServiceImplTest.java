@@ -247,6 +247,9 @@ class RoastingProfileServiceImplTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Client does not exist");
         //Then
+        then(clientRepository).shouldHaveNoMoreInteractions();
+        then(roastingProfileRepository).shouldHaveNoInteractions();
+        then(clientRoastingProfileRepository).shouldHaveNoInteractions();
     }
 
     @Test
