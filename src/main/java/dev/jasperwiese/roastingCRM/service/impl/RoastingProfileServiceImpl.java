@@ -83,8 +83,8 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
     public List<RoastingProfileDto> getAllRoastingProfiles() {
         List<RoastingProfile> roastingProfileList = roastingProfileRepository.findAll();
         List<RoastingProfileDto> roastingProfileDtoList = new ArrayList<>();
-        for (RoastingProfile roastingProfile : roastingProfileList) {
-            RoastingProfileDto roastingProfileDto = roastingProfileMapper.mapToDto(roastingProfile);
+        for (int i = 0; i < roastingProfileList.size() ; i++) {
+            RoastingProfileDto roastingProfileDto = roastingProfileMapper.mapToDto(roastingProfileList.get(i));
             roastingProfileDtoList.add(roastingProfileDto);
         }
         return roastingProfileDtoList;

@@ -2,8 +2,7 @@ package dev.jasperwiese.roastingCRM.service.impl;
 
 import dev.jasperwiese.roastingCRM.dto.*;
 import dev.jasperwiese.roastingCRM.dto.roastingProfile.ClientAddRoastingProfileRequest;
-import dev.jasperwiese.roastingCRM.entity.RoastingProfile;
-import dev.jasperwiese.roastingCRM.entity.TimeIntervals;
+import dev.jasperwiese.roastingCRM.entity.*;
 import dev.jasperwiese.roastingCRM.entity.client.Client;
 import dev.jasperwiese.roastingCRM.entity.client.ClientRoastingProfiles;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
@@ -23,9 +22,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -255,9 +252,66 @@ class RoastingProfileServiceImplTest {
     @Test
     void itShouldGetAllRoastingProfiles() {
         //Given
-        given(roastingProfileRepository.findAll()).willReturn(Collections.emptyList());
+        List<RoastingProfile> roastingProfileList = Collections.singletonList(
+                RoastingProfile.builder()
+                        .roastingProfileId(UUID.fromString("581213cb-37d6-4124-ac5f-7d694f7bd570"))
+                        .profileName("sample profile name")
+                        .roasterModel("roaster model sample")
+                        .notes("sample notes")
+                        .greenBeans(
+                                GreenBeans.builder()
+                                        .greenBeansId(UUID.fromString("6d4cbbde-8560-4d26-a7ac-11f392c49bc0"))
+                                        .field("sample field")
+                                        .region("Uganda")
+                                        .grade("AA")
+                                        .flavour("Bold")
+                                        .body("Full")
+                                        .acidity("Low")
+                                        .process("Shelled")
+                                        .moisture("10%")
+                                        .packaging("Box")
+                                        .notes("High Quality Bean.")
+                                        .build()
+                        )
+                        .targetTemperature(
+                                TargetTemperature.builder()
+                                        .targetTemperatureId(UUID.fromString("625fd101-d771-4420-b46a-6a787df091ac"))
+                                        .preheat("180")
+                                        .firstCrack("200")
+                                        .development("250")
+                                        .dropTemperature("260")
+                                        .build()
+                        )
+                        .timeIntervals(
+                                TimeIntervals.builder()
+                                        .timeIntervalsId(UUID.fromString("9c717e6e-237d-4c21-9758-4d4b9d43beb0"))
+                                        .preheat("180")
+                                        .firstCrack("300")
+                                        .development("500")
+                                        .total("650")
+                                        .build()
+                        )
+                        .airflowSettings(
+                                AirflowSettings.builder()
+                                        .airflowSettingsId(UUID.fromString("9c35be37-a922-4a38-8c10-22ab7cf6f6e7"))
+                                        .low("50")
+                                        .medium("100")
+                                        .high("200")
+                                        .build()
+                        )
+                        .build()
+        );
+        given(roastingProfileRepository.findAll()).willReturn(roastingProfileList);
+        given(roastingProfileMapper.mapToDto(any(RoastingProfile.class)))
+                .willReturn(RoastingProfileDto.builder().build());
         //When
+        List<RoastingProfileDto> result = underTest.getAllRoastingProfiles();
         //Then
+        then(roastingProfileRepository).should().findAll();
+        then(roastingProfileRepository).shouldHaveNoMoreInteractions();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0)).isInstanceOf(RoastingProfileDto.class);
+
     }
 
     @Test
