@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RoastingProfileServiceImplTest {
@@ -445,6 +445,8 @@ class RoastingProfileServiceImplTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Roasting profile does not exist");
         //Then
+        then(roastingProfileRepository).shouldHaveNoInteractions();
+        then(roastingProfileMapper).shouldHaveNoInteractions();
     }
 
     @Test
@@ -457,6 +459,8 @@ class RoastingProfileServiceImplTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Roasting profile does not exist");
         //Then
+        then(roastingProfileRepository).shouldHaveNoMoreInteractions();
+        then(roastingProfileMapper).shouldHaveNoInteractions();
     }
 
     @Test
@@ -469,7 +473,24 @@ class RoastingProfileServiceImplTest {
     @Test
     void itShouldDeleteRoastingProfileById() {
         //Given
+        given(roastingProfileValidator.validateIfRoastingProfileExists(any(String.class))).willReturn(true);
+        doNothing().when(roastingProfileRepository).deleteById(any(UUID.class));
         //When
+        underTest.deleteRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd570");
         //Then
+        verify(roastingProfileRepository,
+                times(1)).deleteById(UUID.fromString("581213cb-37d6-4124-ac5f-7d694f7bd570"));
+    }
+
+    @Test
+    void itShouldNotDeleteRoastingProfileByIdIfTheRoastingProfileDoesNotExistsAndThrowARuntimeException() {
+        //Given
+        given(roastingProfileValidator.validateIfRoastingProfileExists(any(String.class))).willReturn(false);
+        //When
+        assertThatThrownBy(() -> underTest.deleteRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd580"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Roasting profile does not exist");
+        //Then
+        then(roastingProfileRepository).shouldHaveNoInteractions();
     }
 }

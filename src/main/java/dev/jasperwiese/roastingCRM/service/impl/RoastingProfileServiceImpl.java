@@ -122,6 +122,7 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
     @Override
     public void deleteRoastingProfileById(String roastingProfileId) {
       boolean roastingProfileExists = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
+
       if(!roastingProfileExists) {
           throw new RuntimeException("Roasting profile does not exist");
       }
