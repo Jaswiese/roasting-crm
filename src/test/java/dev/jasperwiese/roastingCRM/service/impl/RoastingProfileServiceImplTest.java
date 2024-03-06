@@ -5,6 +5,7 @@ import dev.jasperwiese.roastingCRM.dto.roastingProfile.ClientAddRoastingProfileR
 import dev.jasperwiese.roastingCRM.entity.*;
 import dev.jasperwiese.roastingCRM.entity.client.Client;
 import dev.jasperwiese.roastingCRM.entity.client.ClientRoastingProfiles;
+import dev.jasperwiese.roastingCRM.entity.client.pk.ClientRoastingProfilesPK;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
 import dev.jasperwiese.roastingCRM.repository.ClientRoastingProfileRepository;
 import dev.jasperwiese.roastingCRM.repository.RoastingProfileRepository;
@@ -15,6 +16,7 @@ import dev.jasperwiese.roastingCRM.utilities.mappers.roastingMappers.TargetTempe
 import dev.jasperwiese.roastingCRM.utilities.mappers.roastingMappers.TimeIntervalsMapper;
 import dev.jasperwiese.roastingCRM.utilities.validators.ClientValidator;
 import dev.jasperwiese.roastingCRM.utilities.validators.RoastingProfileValidator;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -466,8 +468,40 @@ class RoastingProfileServiceImplTest {
     @Test
     void itShouldGetAllRoastingProfilesOfClient() {
         //Given
+        List<ClientRoastingProfiles> clientRoastingProfilesList = Arrays.asList(
+                ClientRoastingProfiles.builder()
+                        .id(new ClientRoastingProfilesPK(
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e"),
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e")
+                                )
+                        )
+                        .roastingProfile(roastingProfile)
+                        .build(),
+                ClientRoastingProfiles.builder()
+                        .id(new ClientRoastingProfilesPK(
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e"),
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e")
+                                )
+                        )
+                        .roastingProfile(roastingProfile)
+                        .build()
+        );
+        given(clientRoastingProfileRepository.findClientRoastingProfilesByClientClientId(any(UUID.class)))
+                .willReturn(clientRoastingProfilesList);
+        given(roastingProfileMapper.mapToDto(any(RoastingProfile.class))).willReturn(roastingProfileDto);
         //When
+        List<RoastingProfileDto> result = underTest.getAllRoastingProfilesOfClient("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e");
         //Then
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0)).isInstanceOf(RoastingProfileDto.class);
+        assertThat(result.get(1)).isInstanceOf(RoastingProfileDto.class);
+        verify(clientRoastingProfileRepository,
+                times(1))
+                .findClientRoastingProfilesByClientClientId(UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e"));
+        verify(roastingProfileMapper,
+                times(2))
+                .mapToDto(any(RoastingProfile.class));
+
     }
 
     @Test
