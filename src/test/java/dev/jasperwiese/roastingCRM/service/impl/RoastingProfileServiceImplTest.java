@@ -5,6 +5,7 @@ import dev.jasperwiese.roastingCRM.dto.roastingProfile.ClientAddRoastingProfileR
 import dev.jasperwiese.roastingCRM.entity.*;
 import dev.jasperwiese.roastingCRM.entity.client.Client;
 import dev.jasperwiese.roastingCRM.entity.client.ClientRoastingProfiles;
+import dev.jasperwiese.roastingCRM.entity.client.pk.ClientRoastingProfilesPK;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
 import dev.jasperwiese.roastingCRM.repository.ClientRoastingProfileRepository;
 import dev.jasperwiese.roastingCRM.repository.RoastingProfileRepository;
@@ -15,6 +16,7 @@ import dev.jasperwiese.roastingCRM.utilities.mappers.roastingMappers.TargetTempe
 import dev.jasperwiese.roastingCRM.utilities.mappers.roastingMappers.TimeIntervalsMapper;
 import dev.jasperwiese.roastingCRM.utilities.validators.ClientValidator;
 import dev.jasperwiese.roastingCRM.utilities.validators.RoastingProfileValidator;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RoastingProfileServiceImplTest {
@@ -48,6 +50,9 @@ class RoastingProfileServiceImplTest {
     @Mock
     private ClientValidator clientValidator;
     private ClientAddRoastingProfileRequest clientAddRoastingProfileRequest;
+
+    private RoastingProfile roastingProfile;
+    private RoastingProfileDto roastingProfileDto;
     private GreenbeansMapper greenbeansMapper;
     private AirFlowSettingsMapper airFlowSettingsMapper;
     private TargetTemperatureMapper targetTemperatureMapper;
@@ -112,6 +117,106 @@ class RoastingProfileServiceImplTest {
                                .build()
                )
                .build();
+       /*Both of roastingProfile entity & roastingProfileDto will be the exact same as another,
+        due to the frequent mapping between the dto & entity in the logic.
+       * */
+       //Initialising a RoastingProfile entity for reuse in the unit tests below
+       roastingProfile = RoastingProfile.builder()
+               .roastingProfileId(UUID.fromString("581213cb-37d6-4124-ac5f-7d694f7bd570"))
+               .profileName("sample profile name")
+               .roasterModel("roaster model sample")
+               .notes("sample notes")
+               .greenBeans(
+                       GreenBeans.builder()
+                               .greenBeansId(UUID.fromString("6d4cbbde-8560-4d26-a7ac-11f392c49bc0"))
+                               .field("sample field")
+                               .region("Uganda")
+                               .grade("AA")
+                               .flavour("Bold")
+                               .body("Full")
+                               .acidity("Low")
+                               .process("Shelled")
+                               .moisture("10%")
+                               .packaging("Box")
+                               .notes("High Quality Bean.")
+                               .build()
+               )
+               .targetTemperature(
+                       TargetTemperature.builder()
+                               .targetTemperatureId(UUID.fromString("625fd101-d771-4420-b46a-6a787df091ac"))
+                               .preheat("180")
+                               .firstCrack("200")
+                               .development("250")
+                               .dropTemperature("260")
+                               .build()
+               )
+               .timeIntervals(
+                       TimeIntervals.builder()
+                               .timeIntervalsId(UUID.fromString("9c717e6e-237d-4c21-9758-4d4b9d43beb0"))
+                               .preheat("180")
+                               .firstCrack("300")
+                               .development("500")
+                               .total("650")
+                               .build()
+               )
+               .airflowSettings(
+                       AirflowSettings.builder()
+                               .airflowSettingsId(UUID.fromString("9c35be37-a922-4a38-8c10-22ab7cf6f6e7"))
+                               .low("50")
+                               .medium("100")
+                               .high("200")
+                               .build()
+               )
+               .build();
+       //Initialising a RoastingProfileDto for reuse in the unit tests below.
+        roastingProfileDto = RoastingProfileDto.builder()
+                .roastingProfileId("581213cb-37d6-4124-ac5f-7d694f7bd570")
+                .profileName("sample profile name")
+                .roasterModel("roaster model sample")
+                .notes("sample notes")
+                .greenBeansDto(
+                        GreenBeansDto.builder()
+                                .greenBeansId("6d4cbbde-8560-4d26-a7ac-11f392c49bc0")
+                                .field("sample field")
+                                .region("Uganda")
+                                .grade("AA")
+                                .flavour("Bold")
+                                .body("Full")
+                                .acidity("Low")
+                                .process("Shelled")
+                                .moisture("10%")
+                                .packaging("Box")
+                                .notes("High Quality Bean.")
+                                .build()
+                )
+                .targetTemperatureDto(
+                        TargetTemperatureDto.builder()
+                                .targetTemperatureId("625fd101-d771-4420-b46a-6a787df091ac")
+                                .preheat("180")
+                                .firstCrack("200")
+                                .development("250")
+                                .drop("260")
+                                .build()
+                )
+                .timeIntervalsDto(
+                        TimeIntervalsDto.builder()
+                                .timeIntervalsId("9c717e6e-237d-4c21-9758-4d4b9d43beb0")
+                                .preheat("180")
+                                .firstCrack("300")
+                                .development("500")
+                                .total("650")
+                                .build()
+                )
+                .airFlowSettingsDto(
+                        AirFlowSettingsDto.builder()
+                                .airFlowSettingsId("9c35be37-a922-4a38-8c10-22ab7cf6f6e7")
+                                .low("50")
+                                .medium("100")
+                                .high("200")
+                                .build()
+                )
+                .build();
+
     }
 
     @Test
@@ -252,6 +357,7 @@ class RoastingProfileServiceImplTest {
     @Test
     void itShouldGetAllRoastingProfiles() {
         //Given
+        //Singleton list given to the mock database call for the findAll()
         List<RoastingProfile> roastingProfileList = Collections.singletonList(
                 RoastingProfile.builder()
                         .roastingProfileId(UUID.fromString("581213cb-37d6-4124-ac5f-7d694f7bd570"))
@@ -301,37 +407,124 @@ class RoastingProfileServiceImplTest {
                         )
                         .build()
         );
+        // repository mocked for the database call of findAll()
         given(roastingProfileRepository.findAll()).willReturn(roastingProfileList);
+        // roastingProfileMapper.mapToDto call mocked
         given(roastingProfileMapper.mapToDto(any(RoastingProfile.class)))
                 .willReturn(RoastingProfileDto.builder().build());
         //When
         List<RoastingProfileDto> result = underTest.getAllRoastingProfiles();
         //Then
+        //Checking that the correct calls are made to the database
         then(roastingProfileRepository).should().findAll();
+        //Checking that only one call was made.
         then(roastingProfileRepository).shouldHaveNoMoreInteractions();
+        //Ensuring that the size of the mocked result is the same as it's input.
         assertThat(result).hasSize(1);
         assertThat(result.get(0)).isInstanceOf(RoastingProfileDto.class);
-
     }
 
     @Test
     void itShouldGetRoastingProfileById() {
         //Given
+        given(roastingProfileValidator.validateIfRoastingProfileExists(any())).willReturn(true);
+        given(roastingProfileRepository.findById(any())).willReturn(Optional.of(roastingProfile));
+        given(roastingProfileMapper.mapToDto(any(RoastingProfile.class))).willReturn(roastingProfileDto);
         //When
+        RoastingProfileDto result = underTest.getRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd570");
         //Then
+        then(roastingProfileValidator).shouldHaveNoMoreInteractions();
+        then(roastingProfileRepository).shouldHaveNoMoreInteractions();
+        then(roastingProfileMapper).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    void itShouldThrowRunTimeExceptionIfRoastingProfileValidatorReturnsAFalseValueAsRoastingProfileDoesNotExist(){
+        //Given
+        given(roastingProfileValidator.validateIfRoastingProfileExists(any(String.class))).willReturn(false);
+        //When
+        assertThatThrownBy(() -> underTest.getRoastingProfileById("roastingProfileId"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Roasting profile does not exist");
+        //Then
+        then(roastingProfileRepository).shouldHaveNoInteractions();
+        then(roastingProfileMapper).shouldHaveNoInteractions();
+    }
+
+    @Test
+    void itShouldThrowRunTimeExceptionIfFindByIdRepositoryCallReturnsAnEmptyOptional() {
+        //Given
+        given(roastingProfileValidator.validateIfRoastingProfileExists(any())).willReturn(true);
+        given(roastingProfileRepository.findById(any())).willReturn(Optional.empty());
+        //When
+        assertThatThrownBy(() -> underTest.getRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd670"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Roasting profile does not exist");
+        //Then
+        then(roastingProfileRepository).shouldHaveNoMoreInteractions();
+        then(roastingProfileMapper).shouldHaveNoInteractions();
     }
 
     @Test
     void itShouldGetAllRoastingProfilesOfClient() {
         //Given
+        List<ClientRoastingProfiles> clientRoastingProfilesList = Arrays.asList(
+                ClientRoastingProfiles.builder()
+                        .id(new ClientRoastingProfilesPK(
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e"),
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e")
+                                )
+                        )
+                        .roastingProfile(roastingProfile)
+                        .build(),
+                ClientRoastingProfiles.builder()
+                        .id(new ClientRoastingProfilesPK(
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e"),
+                                        UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e")
+                                )
+                        )
+                        .roastingProfile(roastingProfile)
+                        .build()
+        );
+        given(clientRoastingProfileRepository.findClientRoastingProfilesByClientClientId(any(UUID.class)))
+                .willReturn(clientRoastingProfilesList);
+        given(roastingProfileMapper.mapToDto(any(RoastingProfile.class))).willReturn(roastingProfileDto);
         //When
+        List<RoastingProfileDto> result = underTest.getAllRoastingProfilesOfClient("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e");
         //Then
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0)).isInstanceOf(RoastingProfileDto.class);
+        assertThat(result.get(1)).isInstanceOf(RoastingProfileDto.class);
+        verify(clientRoastingProfileRepository,
+                times(1))
+                .findClientRoastingProfilesByClientClientId(UUID.fromString("0a0bb313-75fd-4d3d-ac4d-568dd2cc615e"));
+        verify(roastingProfileMapper,
+                times(2))
+                .mapToDto(any(RoastingProfile.class));
+
     }
 
     @Test
     void itShouldDeleteRoastingProfileById() {
         //Given
+        given(roastingProfileValidator.validateIfRoastingProfileExists(any(String.class))).willReturn(true);
+        doNothing().when(roastingProfileRepository).deleteById(any(UUID.class));
         //When
+        underTest.deleteRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd570");
         //Then
+        verify(roastingProfileRepository,
+                times(1)).deleteById(UUID.fromString("581213cb-37d6-4124-ac5f-7d694f7bd570"));
+    }
+
+    @Test
+    void itShouldNotDeleteRoastingProfileByIdIfTheRoastingProfileDoesNotExistsAndThrowARuntimeException() {
+        //Given
+        given(roastingProfileValidator.validateIfRoastingProfileExists(any(String.class))).willReturn(false);
+        //When
+        assertThatThrownBy(() -> underTest.deleteRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd580"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Roasting profile does not exist");
+        //Then
+        then(roastingProfileRepository).shouldHaveNoInteractions();
     }
 }

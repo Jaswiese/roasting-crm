@@ -106,7 +106,7 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
 
 
     }
-
+    @Transactional
     @Override
     public List<RoastingProfileDto> getAllRoastingProfilesOfClient(String clientId) {
         List<ClientRoastingProfiles> clientRoastingProfilesList = clientRoastingProfileRepository.findClientRoastingProfilesByClientClientId(UUID.fromString(clientId));
@@ -118,10 +118,11 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
         }
         return roastingProfileDtoList;
     }
-
+    @Transactional
     @Override
     public void deleteRoastingProfileById(String roastingProfileId) {
       boolean roastingProfileExists = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
+
       if(!roastingProfileExists) {
           throw new RuntimeException("Roasting profile does not exist");
       }
