@@ -48,7 +48,6 @@ class RoastingProfileServiceImplTest {
     @Mock
     private ClientValidator clientValidator;
     private ClientAddRoastingProfileRequest clientAddRoastingProfileRequest;
-
     private RoastingProfile roastingProfile;
     private RoastingProfileDto roastingProfileDto;
     private GreenbeansMapper greenbeansMapper;
