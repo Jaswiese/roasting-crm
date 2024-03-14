@@ -1,6 +1,7 @@
 package dev.jasperwiese.roastingCRM.utilities.validators;
 
 import dev.jasperwiese.roastingCRM.entity.client.Client;
+import dev.jasperwiese.roastingCRM.exceptions.client.ClientNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,10 +43,10 @@ class ClientValidatorTest {
     }
 
     @Test
-    void itShouldThrowRuntimeExceptionIfTheClientDoesNotExist() {
+    void itShouldThrowClientNotFoundExceptionIfTheClientDoesNotExist() {
         assertThatThrownBy(() -> underTest.validateIfClientExists(clientId.toString()))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Client does not exist");
+                .isInstanceOf(ClientNotFoundException.class)
+                .hasMessageContaining("Client with ID: " + clientId + " does not exist.");
     }
 
     @Test

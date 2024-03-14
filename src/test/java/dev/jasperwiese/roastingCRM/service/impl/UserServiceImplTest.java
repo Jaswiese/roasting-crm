@@ -8,6 +8,7 @@ import dev.jasperwiese.roastingCRM.entity.Address;
 import dev.jasperwiese.roastingCRM.entity.ContactDetails;
 import dev.jasperwiese.roastingCRM.entity.EmergencyContact;
 import dev.jasperwiese.roastingCRM.entity.user.User;
+import dev.jasperwiese.roastingCRM.exceptions.user.UserNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.AddressRepository;
 import dev.jasperwiese.roastingCRM.repository.ContactDetailsRepository;
 import dev.jasperwiese.roastingCRM.repository.EmergencyContactRepository;
@@ -160,14 +161,15 @@ class UserServiceImplTest {
     }
 
     @Test
-    void itShouldThrowRunTimeExceptionIfNoUserWasFoundWithTheChosenId(){
+    void itShouldThrowUserNotFoundExceptionIfNoUserWasFoundWithTheChosenId(){
         //given
         when(userRepository.findById(any())).thenReturn(Optional.empty());
+        String userId = "dec60e61-908b-446c-964a-4ac54a9f1ae0";
         //when
         //then
-        assertThatThrownBy(() -> underTest.getUserById("dec60e61-908b-446c-964a-4ac54a9f1ae0"))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("User not found");
+        assertThatThrownBy(() -> underTest.getUserById(userId))
+                .isInstanceOf(UserNotFoundException.class)
+                .hasMessage("User not found with ID: " + userId);
     }
 
 }

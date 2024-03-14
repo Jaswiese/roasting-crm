@@ -1,6 +1,7 @@
 package dev.jasperwiese.roastingCRM.utilities.validators;
 
 import dev.jasperwiese.roastingCRM.entity.client.Client;
+import dev.jasperwiese.roastingCRM.exceptions.client.ClientNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class ClientValidator {
         Optional<Client> clientOptional = clientRepository.findById(UUID.fromString(clientId));
 
         if (clientOptional.isEmpty()) {
-            throw new RuntimeException("Client does not exist");
+            throw new ClientNotFoundException("Client with ID: " + clientId + " does not exist.");
         }
         return clientOptional.get();
     }

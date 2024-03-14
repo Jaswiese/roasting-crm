@@ -1,6 +1,7 @@
 package dev.jasperwiese.roastingCRM.utilities.validators;
 
 import dev.jasperwiese.roastingCRM.entity.user.User;
+import dev.jasperwiese.roastingCRM.exceptions.user.UserNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,10 +42,10 @@ class UserValidatorTest {
     }
 
     @Test
-    void itShouldThrowARuntimeExceptionIfUserDoesNotExist() {
+    void itShouldThrowAUserNotFoundExceptionIfUserDoesNotExist() {
         assertThatThrownBy(() -> underTest.validateIfUserExists(userId.toString()))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("User does not exist");
+                .isInstanceOf(UserNotFoundException.class)
+                .hasMessageContaining("User with ID: " + userId + " was not found." );
 
     }
 }

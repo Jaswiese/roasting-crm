@@ -1,6 +1,7 @@
 package dev.jasperwiese.roastingCRM.utilities.validators;
 
 import dev.jasperwiese.roastingCRM.entity.user.User;
+import dev.jasperwiese.roastingCRM.exceptions.user.UserNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class UserValidator {
         Optional<User> userOptional = userRepository.findById(
                 UUID.fromString(userId));
         if (userOptional.isEmpty()) {
-            throw new RuntimeException("User does not exist");
+            throw new UserNotFoundException("User with ID: " + userId + " was not found.");
         }
         return userOptional.get();
     }

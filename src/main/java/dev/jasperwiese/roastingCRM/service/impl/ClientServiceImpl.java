@@ -12,6 +12,7 @@ import dev.jasperwiese.roastingCRM.entity.client.ClientAddress;
 import dev.jasperwiese.roastingCRM.entity.client.ClientContact;
 import dev.jasperwiese.roastingCRM.entity.client.pk.ClientAddressPK;
 import dev.jasperwiese.roastingCRM.entity.client.pk.ClientContactPK;
+import dev.jasperwiese.roastingCRM.exceptions.client.ClientNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.*;
 import dev.jasperwiese.roastingCRM.service.ClientService;
 import dev.jasperwiese.roastingCRM.utilities.mappers.AddressMapper;
@@ -136,7 +137,7 @@ public class ClientServiceImpl implements ClientService {
         if (client.isPresent()) {
             return  clientDto = clientMapper.mapToDto(client.get());
         }
-        throw new RuntimeException("client not found");
+        throw new ClientNotFoundException("Client with ID: " + clientId + " was not found.");
     }
 
 }
