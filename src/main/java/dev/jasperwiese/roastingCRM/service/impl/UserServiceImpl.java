@@ -6,6 +6,7 @@ import dev.jasperwiese.roastingCRM.entity.*;
 import dev.jasperwiese.roastingCRM.entity.user.User;
 import dev.jasperwiese.roastingCRM.entity.user.UserAddress;
 import dev.jasperwiese.roastingCRM.entity.user.UserAddressPK;
+import dev.jasperwiese.roastingCRM.exceptions.user.UserNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.AddressRepository;
 import dev.jasperwiese.roastingCRM.repository.ContactDetailsRepository;
 import dev.jasperwiese.roastingCRM.repository.EmergencyContactRepository;
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
             User user = userOptional.get();
             return userMapper.mapToDto(user);
         } else {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found with ID: " + userId);
         }
     }
 }

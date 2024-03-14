@@ -12,6 +12,7 @@ import dev.jasperwiese.roastingCRM.entity.client.ClientRoastingProfiles;
 import dev.jasperwiese.roastingCRM.entity.client.pk.ClientAddressPK;
 import dev.jasperwiese.roastingCRM.entity.client.pk.ClientContactPK;
 import dev.jasperwiese.roastingCRM.entity.client.pk.ClientRoastingProfilesPK;
+import dev.jasperwiese.roastingCRM.exceptions.client.ClientNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.AddressRepository;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
 import dev.jasperwiese.roastingCRM.repository.ContactDetailsRepository;
@@ -413,13 +414,14 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void itShouldThrowRunTimeExceptionIfClientDoesNotExist() {
+    void itShouldThrowClientNotFoundExceptionIfClientDoesNotExist() {
         //Given
         given(clientRepository.findById(any(UUID.class))).willReturn(Optional.empty());
+        String clientId = UUID.randomUUID().toString();
         //When
-        assertThatThrownBy(() -> underTest.findClientById(UUID.randomUUID().toString()))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("client not found");
+        assertThatThrownBy(() -> underTest.findClientById(clientId))
+                .isInstanceOf(ClientNotFoundException.class)
+                .hasMessageContaining("Client with ID: " + clientId + " was not found." );
 
         //Then
         then(clientRepository).shouldHaveNoMoreInteractions();

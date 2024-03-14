@@ -6,6 +6,8 @@ import dev.jasperwiese.roastingCRM.entity.RoastingProfile;
 import dev.jasperwiese.roastingCRM.entity.client.Client;
 import dev.jasperwiese.roastingCRM.entity.client.ClientRoastingProfiles;
 import dev.jasperwiese.roastingCRM.entity.client.pk.ClientRoastingProfilesPK;
+import dev.jasperwiese.roastingCRM.exceptions.client.ClientNotFoundException;
+import dev.jasperwiese.roastingCRM.exceptions.roastingProfile.RoastingProfileNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
 import dev.jasperwiese.roastingCRM.repository.ClientRoastingProfileRepository;
 import dev.jasperwiese.roastingCRM.repository.RoastingProfileRepository;
@@ -58,7 +60,7 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
         //TODO: use clientValidator.
         Optional<Client> clientOptional = clientRepository.findById(UUID.fromString(clientAddRoastingProfileRequest.getClientId()));
         if(!clientOptional.isPresent() && clientOptional.isEmpty()) {
-            throw new RuntimeException("Client does not exist");
+            throw new ClientNotFoundException("Client with ID: " + clientAddRoastingProfileRequest.getClientId() + " was not found");
         }
         //Saving roastingProfile to database
         RoastingProfile roastingProfile = roastingProfileRepository.save(roastingProfileMapper.mapToEntity(roastingProfileDto));
@@ -96,11 +98,11 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
 
         boolean roastingProfileExists = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
         if(!roastingProfileExists) {
-            throw new RuntimeException("Roasting profile does not exist");
+            throw new RoastingProfileNotFoundException("Roasting profile with ID: " + roastingProfileId + " does not exist.");
         }
         Optional<RoastingProfile> roastingProfile = roastingProfileRepository.findById(UUID.fromString(roastingProfileId));
         if(roastingProfile.isEmpty()) {
-            throw new RuntimeException("Roasting profile does not exist");
+            throw new RoastingProfileNotFoundException("Roasting profile with ID: " + roastingProfileId + " does not exist.");
         }
         return roastingProfileMapper.mapToDto(roastingProfile.get());
 
@@ -124,7 +126,7 @@ public class RoastingProfileServiceImpl implements RoastingProfileService {
       boolean roastingProfileExists = roastingProfileValidator.validateIfRoastingProfileExists(roastingProfileId);
 
       if(!roastingProfileExists) {
-          throw new RuntimeException("Roasting profile does not exist");
+          throw new RoastingProfileNotFoundException("Roasting profile with ID: " + roastingProfileId + " does not exist.");
       }
       roastingProfileRepository.deleteById(UUID.fromString(roastingProfileId));
     }

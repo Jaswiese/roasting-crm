@@ -6,6 +6,8 @@ import dev.jasperwiese.roastingCRM.entity.*;
 import dev.jasperwiese.roastingCRM.entity.client.Client;
 import dev.jasperwiese.roastingCRM.entity.client.ClientRoastingProfiles;
 import dev.jasperwiese.roastingCRM.entity.client.pk.ClientRoastingProfilesPK;
+import dev.jasperwiese.roastingCRM.exceptions.client.ClientNotFoundException;
+import dev.jasperwiese.roastingCRM.exceptions.roastingProfile.RoastingProfileNotFoundException;
 import dev.jasperwiese.roastingCRM.repository.ClientRepository;
 import dev.jasperwiese.roastingCRM.repository.ClientRoastingProfileRepository;
 import dev.jasperwiese.roastingCRM.repository.RoastingProfileRepository;
@@ -341,10 +343,11 @@ class RoastingProfileServiceImplTest {
     void itShouldNotSaveClientRoastingProfileIfClientDoesNotExist() {
         //Given
         given(clientRepository.findById(any())).willReturn(Optional.empty());
+        String clientId = clientAddRoastingProfileRequest.getClientId();
         //When
         assertThatThrownBy(() -> underTest.createClientRoastingProfile(clientAddRoastingProfileRequest))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Client does not exist");
+                .isInstanceOf(ClientNotFoundException.class)
+                .hasMessageContaining("Client with ID: " + clientId + " was not found");
         //Then
         then(clientRepository).shouldHaveNoMoreInteractions();
         then(roastingProfileRepository).shouldHaveNoInteractions();
@@ -439,10 +442,11 @@ class RoastingProfileServiceImplTest {
     void itShouldThrowRunTimeExceptionIfRoastingProfileValidatorReturnsAFalseValueAsRoastingProfileDoesNotExist(){
         //Given
         given(roastingProfileValidator.validateIfRoastingProfileExists(any(String.class))).willReturn(false);
+        String roastingProfileId = UUID.randomUUID().toString();
         //When
-        assertThatThrownBy(() -> underTest.getRoastingProfileById("roastingProfileId"))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Roasting profile does not exist");
+        assertThatThrownBy(() -> underTest.getRoastingProfileById(roastingProfileId))
+                .isInstanceOf(RoastingProfileNotFoundException.class)
+                .hasMessageContaining("Roasting profile with ID: " + roastingProfileId + " does not exist.");
         //Then
         then(roastingProfileRepository).shouldHaveNoInteractions();
         then(roastingProfileMapper).shouldHaveNoInteractions();
@@ -453,10 +457,11 @@ class RoastingProfileServiceImplTest {
         //Given
         given(roastingProfileValidator.validateIfRoastingProfileExists(any())).willReturn(true);
         given(roastingProfileRepository.findById(any())).willReturn(Optional.empty());
+        String roastingProfileId = "581213cb-37d6-4124-ac5f-7d694f7bd670";
         //When
-        assertThatThrownBy(() -> underTest.getRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd670"))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Roasting profile does not exist");
+        assertThatThrownBy(() -> underTest.getRoastingProfileById(roastingProfileId))
+                .isInstanceOf(RoastingProfileNotFoundException.class)
+                .hasMessageContaining("Roasting profile with ID: " + roastingProfileId + " does not exist.");
         //Then
         then(roastingProfileRepository).shouldHaveNoMoreInteractions();
         then(roastingProfileMapper).shouldHaveNoInteractions();
@@ -517,10 +522,11 @@ class RoastingProfileServiceImplTest {
     void itShouldNotDeleteRoastingProfileByIdIfTheRoastingProfileDoesNotExistsAndThrowARuntimeException() {
         //Given
         given(roastingProfileValidator.validateIfRoastingProfileExists(any(String.class))).willReturn(false);
+        String roastingProfileId = "581213cb-37d6-4124-ac5f-7d694f7bd580";
         //When
-        assertThatThrownBy(() -> underTest.deleteRoastingProfileById("581213cb-37d6-4124-ac5f-7d694f7bd580"))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Roasting profile does not exist");
+        assertThatThrownBy(() -> underTest.deleteRoastingProfileById(roastingProfileId))
+                .isInstanceOf(RoastingProfileNotFoundException.class)
+                .hasMessageContaining("Roasting profile with ID: " + roastingProfileId + " does not exist.");
         //Then
         then(roastingProfileRepository).shouldHaveNoInteractions();
     }
