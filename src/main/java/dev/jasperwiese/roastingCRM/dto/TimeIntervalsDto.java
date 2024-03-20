@@ -19,7 +19,7 @@ public class TimeIntervalsDto {
     @NotEmpty(message = "preheat can not be empty.")
     @NotNull(message = "preheat can not be null.")
     @Pattern(
-            regexp = "/^\\d+$/",
+            regexp = "^\\d+$",
             message = "preheat can only contain digits. This is due to the fact that this reflects minutes."
     )
     private String preheat;
@@ -27,7 +27,7 @@ public class TimeIntervalsDto {
     @NotEmpty(message = "first crack can not be empty.")
     @NotNull(message = "first crack can not be null.")
     @Pattern(
-            regexp = "/^\\d+$/",
+            regexp = "^\\d+$",
             message = "first crack can only contain digits. This is due to the fact that this reflects minutes."
     )
     private String firstCrack;
@@ -35,7 +35,7 @@ public class TimeIntervalsDto {
     @NotEmpty(message = "development can not be empty.")
     @NotNull(message = "development can not be null.")
     @Pattern(
-            regexp = "/^\\d+$/",
+            regexp = "^\\d+$",
             message = "development can only contain digits. This is due to the fact that this reflects minutes."
     )
     private String development;
@@ -43,7 +43,7 @@ public class TimeIntervalsDto {
     @NotEmpty(message = "total can not be empty.")
     @NotNull(message = "total can not null.")
     @Pattern(
-            regexp = "/^\\d+$/",
+            regexp = "^\\d+$",
             message = "total can only contain digits. This is due to the fact that this reflects minutes."
     )
     private String total;

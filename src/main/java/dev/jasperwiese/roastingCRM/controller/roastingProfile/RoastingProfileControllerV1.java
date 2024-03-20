@@ -3,6 +3,7 @@ package dev.jasperwiese.roastingCRM.controller.roastingProfile;
 import dev.jasperwiese.roastingCRM.dto.RoastingProfileDto;
 import dev.jasperwiese.roastingCRM.dto.roastingProfile.ClientAddRoastingProfileRequest;
 import dev.jasperwiese.roastingCRM.service.impl.RoastingProfileServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,8 @@ public class RoastingProfileControllerV1 {
     }
 
     @PostMapping("/client/add")
-    public ResponseEntity<RoastingProfileDto> addClientRoastingProfile(@RequestBody ClientAddRoastingProfileRequest clientAddRoastingProfileRequest){
+    public ResponseEntity<RoastingProfileDto> addClientRoastingProfile(@RequestBody @Valid ClientAddRoastingProfileRequest clientAddRoastingProfileRequest){
         return new ResponseEntity<>(roastingProfileService.createClientRoastingProfile(clientAddRoastingProfileRequest), HttpStatus.CREATED);
-
     }
 
     @GetMapping("/all")
