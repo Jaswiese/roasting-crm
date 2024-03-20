@@ -3,6 +3,7 @@ package dev.jasperwiese.roastingCRM.controller.client;
 import dev.jasperwiese.roastingCRM.dto.client.ClientCreationRequest;
 import dev.jasperwiese.roastingCRM.dto.client.ClientDto;
 import dev.jasperwiese.roastingCRM.service.impl.ClientServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
