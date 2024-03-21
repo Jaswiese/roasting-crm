@@ -27,11 +27,19 @@ public class UserDto {
     private Boolean verified;
 
     @NotEmpty(message = "First name may not be empty.")
-    @Size(min = 2, max = 32, message = "First name must be between 2 and 32 characters long.")
+    @Size(
+            min = 2,
+            max = 32,
+            message = "First name must be between 2 and 32 characters long."
+    )
     private String firstName;
 
     @NotEmpty(message = "Last name may not be empty.")
-    @Size(min = 1, max = 32, message = "Last name must be between 1 and 32 characters long.")
+    @Size(
+            min = 1,
+            max = 32,
+            message = "Last name must be between 1 and 32 characters long."
+    )
     private String lastName;
     /*
     * The Regex pattern of ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).{12,}$
@@ -57,6 +65,7 @@ public class UserDto {
 
     @Valid
     private EmergencyContactDto emergencyContactDto;
+
     @NotEmpty(message = "a User address must be provided and cannot be empty.")
     private List<AddressDto> addressDtoList;
 }
